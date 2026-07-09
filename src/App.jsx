@@ -3,8 +3,10 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import QuizMode from './components/QuizMode';
+import SwipeMode from './components/SwipeMode';
 import CheatSheetMode from './components/CheatSheetMode';
 import EssayMode from './components/EssayMode';
+import GlossaryMode from './components/GlossaryMode';
 
 function App() {
   return (
@@ -15,7 +17,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<QuizMode />} />
+            <Route path="/swipe" element={<SwipeMode />} />
             <Route path="/cheatsheet" element={<CheatSheetMode />} />
+            <Route path="/glossary" element={<GlossaryMode />} />
             <Route path="/essay" element={<EssayMode />} />
           </Routes>
         </main>

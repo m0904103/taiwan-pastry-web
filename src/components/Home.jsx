@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CountdownTimer from './CountdownTimer';
 import { BookOpen, PenTool, CheckSquare, Coffee } from 'lucide-react';
 
 const Home = () => {
@@ -15,6 +16,8 @@ const Home = () => {
         </div>
       </header>
 
+      <CountdownTimer />
+
       <section className="features-grid">
         <Link to="/quiz" className="feature-card">
           <div className="icon-wrapper">
@@ -26,10 +29,18 @@ const Home = () => {
 
         <Link to="/cheatsheet" className="feature-card">
           <div className="icon-wrapper">
-            <BookOpen size={32} />
+            <CheckSquare size={32} />
           </div>
           <h2>開卷防呆寶典</h2>
           <p>獨家神級寶典，將歷屆考題轉化為白話情境對照表，考試翻書零壓力。</p>
+        </Link>
+
+        <Link to="/glossary" className="feature-card" style={{ borderTop: '3px solid var(--accent-green)' }}>
+          <div className="icon-wrapper">
+            <BookOpen size={32} color="var(--accent-green)" />
+          </div>
+          <h2>30秒糕餅速查圖鑑</h2>
+          <p>刷題前先花 30 秒看過三大分類圖鑑，幫大腦建立記憶抽屜，不再死記硬背。</p>
         </Link>
 
         <Link to="/essay" className="feature-card">

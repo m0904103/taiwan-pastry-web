@@ -1,14 +1,97 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Lightbulb, Edit3, CheckCircle2 } from 'lucide-react';
 import questionsData from '../data/questions.json';
+import './EssayMode.css'; // We'll need some CSS
+
+const ClozeReveal = ({ answer }) => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  if (isRevealed) {
+    return <span className="cloze-correct">{answer}</span>;
+  }
+
+  return (
+    <span className="cloze-wrapper">
+      <button 
+        className="cloze-button" 
+        onClick={() => setIsRevealed(true)}
+        title="在心裡默唸答案後點擊翻牌"
+      >
+        點擊看解答
+      </button>
+    </span>
+  );
+};
+
+const ClozeParagraph = ({ text }) => {
+  const parts = [];
+  const regex = /\{([^}]+)\}/g;
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ type: 'text', content: text.substring(lastIndex, match.index) });
+    }
+    parts.push({ type: 'cloze', answer: match[1] });
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push({ type: 'text', content: text.substring(lastIndex) });
+  }
+
+  return (
+    <div className="cloze-text">
+      {parts.map((p, i) => {
+        if (p.type === 'text') {
+          return (
+            <span key={i}>
+              {p.content.split('\n').map((line, j, arr) => (
+                <React.Fragment key={j}>
+                  {line}
+                  {j < arr.length - 1 && <br />}
+                </React.Fragment>
+              ))}
+            </span>
+          );
+        }
+        return (
+          <ClozeReveal 
+            key={i} 
+            answer={p.answer} 
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 const EssayMode = () => {
   const essays = questionsData.essays;
+  const [mode, setMode] = useState('cloze'); // 'cloze' or 'read'
 
   return (
     <div className="page-container">
-      <div className="header-with-icon">
-        <h1>問答題起手式與防禦陣型</h1>
-        <p className="subtitle">讓老師覺得您很有邏輯，輕鬆拿滿基本分</p>
+      <div className="header-with-icon" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1>問答題起手式與防禦陣型</h1>
+          <p className="subtitle">克漏字提取練習，破除流暢度錯覺，考場絕不腦袋空白！</p>
+        </div>
+        <div>
+          <button 
+            className={`btn-secondary ${mode === 'cloze' ? 'active' : ''}`} 
+            onClick={() => setMode('cloze')}
+            style={{ marginRight: '10px' }}
+          >
+            <Edit3 size={18} /> 填空練習
+          </button>
+          <button 
+            className={`btn-secondary ${mode === 'read' ? 'active' : ''}`} 
+            onClick={() => setMode('read')}
+          >
+            <CheckCircle2 size={18} /> 完整閱讀
+          </button>
+        </div>
       </div>
 
       <div className="essay-container">
@@ -29,9 +112,13 @@ const EssayMode = () => {
                 <strong>▶ 起手式與範例解答：</strong>
               </div>
               <div className="answer-content">
-                {essay.example_answer.split('\n').map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
+                {mode === 'read' ? (
+                  essay.example_answer.split('\n').map((line, i) => (
+                    <p key={i}>{line.replace(/\{([^}]+)\}/g, '$1')}</p>
+                  ))
+                ) : (
+                  <ClozeParagraph text={essay.example_answer} />
+                )}
               </div>
             </div>
           </div>

@@ -1,0 +1,64 @@
+.cloze-wrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: 0 4px;
+}
+
+.cloze-button {
+  background-color: var(--bg-secondary, #e2e8f0);
+  border: 2px dashed var(--text-muted, #94a3b8);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 1rem;
+  color: var(--text-muted, #64748b);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.cloze-button:hover {
+  background-color: var(--primary-color-light, #dbeafe);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.cloze-button:active {
+  transform: translateY(1px);
+}
+
+.cloze-correct {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--accent-green);
+  font-weight: 700;
+  border-radius: 6px;
+  border: 2px solid var(--accent-green);
+  padding: 4px 12px;
+  display: inline-block;
+  animation: reveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes reveal {
+  0% {
+    transform: scale(0.8) rotateX(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.cloze-text {
+  line-height: 2.2;
+  white-space: pre-wrap;
+}
+
+.btn-secondary.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
