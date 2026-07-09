@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CountdownTimer from './CountdownTimer';
 import { BookOpen, PenTool, CheckSquare, Coffee } from 'lucide-react';
 
 const Home = () => {
@@ -16,7 +15,7 @@ const Home = () => {
         </div>
       </header>
 
-      <CountdownTimer />
+      
 
       <section className="features-grid">
         <Link to="/quiz" className="feature-card">
