@@ -245,10 +245,28 @@ const SwipeMode = () => {
   }, [phase, currentCard, sprintIdx, boxes, sprintResults, todayCount]);
 
   // Touch/Mouse drag
-  const onTouchStart = (e) => { setIsDragging(true); setStartX(e.touches[0].clientX); };
-  const onTouchMove = (e) => { if (!isDragging) return; setCurrentX(e.touches[0].clientX - startX); };
+  const touchState = useRef({ startX: 0, startY: 0, isScrolling: false });
+
+  const onTouchStart = (e) => { 
+    setIsDragging(true); 
+    setStartX(e.touches[0].clientX); 
+    touchState.current = { startX: e.touches[0].clientX, startY: e.touches[0].clientY, isScrolling: false };
+  };
+  const onTouchMove = (e) => { 
+    if (!isDragging) return; 
+    const dx = e.touches[0].clientX - touchState.current.startX;
+    const dy = e.touches[0].clientY - touchState.current.startY;
+    if (!touchState.current.isScrolling) {
+      if (Math.abs(dy) > Math.abs(dx) + 5) {
+        touchState.current.isScrolling = true;
+      }
+    }
+    if (touchState.current.isScrolling) return;
+    setCurrentX(dx); 
+  };
   const onTouchEnd = () => {
     setIsDragging(false);
+    if (touchState.current.isScrolling) return;
     if (currentX > 80) { setFlyOut('right'); handleSwipe('right'); }
     else if (currentX < -80) { setFlyOut('left'); handleSwipe('left'); }
     else setCurrentX(0);
@@ -440,6 +458,7 @@ const SwipeMode = () => {
               transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275)',
               width: '100%',
               minHeight: '320px',
+              maxHeight: 'calc(100dvh - 240px)',
               background: 'var(--glass-bg)',
               border: '1px solid var(--glass-border)',
               borderRadius: '18px',
