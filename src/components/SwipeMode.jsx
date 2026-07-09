@@ -475,12 +475,7 @@ const SwipeMode = () => {
             onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
             onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp}
           >
-            {/* OCR warning on card */}
-            {currentCard.needs_review && (
-              <div style={{ background: 'rgba(230,180,0,0.15)', border: '1px solid rgba(230,180,0,0.5)', borderRadius: '8px', padding: '5px 10px', fontSize: '0.72rem', color: '#f0c040', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                ⚠️ 此題疑似有掃描誤差，可跳過不影響學習
-              </div>
-            )}
+
             {/* Category badge */}
             {currentCard.category && (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '20px', padding: '2px 10px', fontSize: '0.72rem', color: 'var(--accent-gold)', marginBottom: '0.75rem', alignSelf: 'flex-start' }}>
