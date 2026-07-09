@@ -449,7 +449,8 @@ const SwipeMode = () => {
               display: 'flex',
               flexDirection: 'column',
               userSelect: 'none',
-              touchAction: 'none',
+              touchAction: 'pan-y',
+              overflowY: 'auto',
               willChange: 'transform',
             }}
             onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
