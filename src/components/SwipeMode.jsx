@@ -510,7 +510,7 @@ const SwipeMode = () => {
                 )}
                 {currentCard.explanation && <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{currentCard.explanation}</p>}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontSize: '0.8rem', fontWeight: '700' }}>
-                  <span style={{ color: 'var(--accent-red)' }}>← 還是錯</span>
+                  <span style={{ color: 'var(--accent-red)' }}>← 還不熟</span>
                   <span style={{ color: 'var(--accent-green)' }}>記住了 →</span>
                 </div>
               </div>
