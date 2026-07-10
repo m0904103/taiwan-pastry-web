@@ -494,8 +494,8 @@ const SwipeMode = () => {
                   <BookOpen size={16} style={{ marginRight: '6px' }} /> 看答案
                 </button>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)' }}>
-                  <span style={{ color: 'var(--accent-red)' }}>← 不會 (Box↓)</span>
-                  <span style={{ color: 'var(--accent-green)' }}>會了 (Box↑) →</span>
+                  <span style={{ color: 'var(--accent-red)' }}>← 不會</span>
+                  <span style={{ color: 'var(--accent-green)' }}>會了 →</span>
                 </div>
               </div>
             ) : (
