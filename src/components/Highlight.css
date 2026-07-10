@@ -1,0 +1,14 @@
+.highlight-word {
+  background-color: rgba(255, 127, 80, 0.15);
+  color: #e65100;
+  font-weight: 700;
+  padding: 0px 4px;
+  border-radius: 4px;
+  margin: 0 1px;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.highlight-word:active {
+  background-color: rgba(255, 127, 80, 0.3);
+}

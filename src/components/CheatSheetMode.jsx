@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import questionsData from '../data/questions.json';
 import { Search } from 'lucide-react';
+import HighlightText from './HighlightText';
+import { pastryKeywords } from '../data/keywords';
 
 const CheatSheetMode = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -111,7 +113,9 @@ const CheatSheetMode = () => {
                     {q.question}
                   </td>
                   <td className="q-answer"><strong>{q.formattedAnswer}</strong></td>
-                  <td className="q-explanation">{q.explanation}</td>
+                  <td className="q-explanation">
+                    <HighlightText text={q.explanation} keywords={pastryKeywords} />
+                  </td>
                 </tr>
               ))
             ) : (
