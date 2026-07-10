@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RefreshCw, Zap, AlertTriangle, BookOpen, ChevronRight, Trophy } from 'lucide-react';
 import GraphicScaffolding from './GraphicScaffolding';
-import HighlightedText from './HighlightedText';
+import HighlightText from './HighlightText';
+import { pastryKeywords } from '../data/keywords';
 import questionsData from '../data/questions.json';
 import { getPastryImage } from '../utils/imageMapper';
 
@@ -520,7 +521,7 @@ const SwipeMode = () => {
             )}
             <GraphicScaffolding text={currentCard.question} />
             <p style={{ fontSize: '1.25rem', lineHeight: 1.6, fontWeight: '600', marginBottom: '1rem', flex: 1, zIndex: 1 }}>
-              <HighlightedText text={currentCard.question} />
+              <HighlightText text={currentCard.question} keywords={pastryKeywords} />
             </p>
 
             {!showAnswer ? (
