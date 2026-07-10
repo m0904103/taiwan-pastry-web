@@ -578,7 +578,7 @@ const SwipeMode = () => {
         <div onClick={() => setDrawerOpen(!drawerOpen)} style={{ height: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', gap: '8px', color: box1Count === 0 ? 'var(--accent-green)' : 'var(--accent-red)', fontWeight: '700', fontSize: '0.9rem', position: 'relative' }}>
           <div style={{ width: '36px', height: '4px', background: 'rgba(255,255,255,0.25)', borderRadius: '2px', position: 'absolute', top: '8px' }} />
           <AlertTriangle size={16} />
-          {box1Count === 0 ? '🎉 恭喜！Box 1 已全部清空！' : `還有 ${box1Count} 題在 Box 1（${Math.round(box1Count / (allQs.length || 1) * 100)}% 陷阱未破）`}
+          {box1Count === 0 ? '🎉 恭喜！「還不熟」題庫已全部清空！' : `還有 ${box1Count} 題在「還不熟」題庫（${Math.round(box1Count / (allQs.length || 1) * 100)}% 陷阱未破）`}
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 1.5rem 1.5rem' }}>
           {box1Count === 0 ? (
@@ -589,7 +589,7 @@ const SwipeMode = () => {
             </div>
           ) : (
             <>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1rem' }}>Box 1 題目（會被優先抽出）：</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1rem' }}>「還不熟」題目（會被優先抽出）：</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
                 {allQs.filter(q => boxes[q.id] === 1).slice(0, 12).map((q, i) => (
                   <div key={i} style={{ background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.3)', padding: '0.8rem', borderRadius: '8px', fontSize: '0.85rem' }}>
