@@ -494,7 +494,9 @@ const SwipeMode = () => {
               width: '100%',
               minHeight: '320px',
               maxHeight: 'calc(100dvh - 240px)',
-              background: `linear-gradient(to bottom, rgba(18,18,18,0.4) 0%, rgba(18,18,18,0.85) 100%), url(${currentCard && getPastryImage(currentCard.question + (currentCard.explanation || '')) ? getPastryImage(currentCard.question + (currentCard.explanation || '')) : './images/default.png'}) center/cover no-repeat`,
+              background: currentCard && getPastryImage(currentCard.question + (currentCard.explanation || '')) 
+                ? `linear-gradient(to bottom, rgba(18,18,18,0.4) 0%, rgba(18,18,18,0.85) 100%), url(${getPastryImage(currentCard.question + (currentCard.explanation || ''))}) center/cover no-repeat`
+                : 'var(--glass-bg)',
               border: '1px solid var(--glass-border)',
               borderRadius: '18px',
               padding: '1.5rem',
