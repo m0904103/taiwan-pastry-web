@@ -66,6 +66,33 @@ const ClozeParagraph = ({ text }) => {
   );
 };
 
+const PracticeArea = () => {
+  const [essayText, setEssayText] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className="textarea-wrapper">
+      <div 
+        className={`experience-prompt ${isFocused ? 'focused' : ''}`}
+        aria-hidden="true"
+      >
+        <span className="prompt-indicator"></span>
+        💡 試著寫下「你上次吃」或「阿嬤買給你的」故事吧！
+      </div>
+
+      <textarea
+        className="essay-textarea"
+        placeholder="開始撰寫你的糕餅記憶..."
+        value={essayText}
+        onChange={(e) => setEssayText(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        aria-label="申論題作答區塊"
+      />
+    </div>
+  );
+};
+
 const EssayMode = () => {
   const essays = questionsData.essays;
   const [mode, setMode] = useState('cloze'); // 'cloze' or 'read'
@@ -120,6 +147,14 @@ const EssayMode = () => {
                   <ClozeParagraph text={essay.example_answer} />
                 )}
               </div>
+            </div>
+
+            {/* 自我練習區塊 */}
+            <div className="essay-practice-section" style={{ marginTop: '2rem', borderTop: '1px dashed #e0e0e0', paddingTop: '1rem' }}>
+              <div className="answer-header" style={{ color: '#795548' }}>
+                <strong>✍️ 換你試試看 (防呆草稿區)：</strong>
+              </div>
+              <PracticeArea />
             </div>
           </div>
         ))}

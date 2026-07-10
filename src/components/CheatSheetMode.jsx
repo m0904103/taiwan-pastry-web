@@ -1,11 +1,41 @@
 import React, { useState } from 'react';
 import questionsData from '../data/questions.json';
 import { Search } from 'lucide-react';
+import './CheatSheetMode.css';
+
+const MaskableTd = ({ children, isReciteMode, className }) => {
+  const [isRevealed, setIsRevealed] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isReciteMode) {
+      setIsRevealed(false);
+    }
+  }, [isReciteMode]);
+
+  const handleReveal = () => {
+    if (isReciteMode && !isRevealed) {
+      setIsRevealed(true);
+    }
+  };
+
+  return (
+    <td className={`maskable-td ${className || ''}`} onClick={handleReveal}>
+      {children}
+      <div 
+        className={`glass-mask ${(!isReciteMode || isRevealed) ? 'revealed' : ''}`}
+        title="點擊顯示"
+      >
+        <span className="glass-mask-text">點擊顯示</span>
+      </div>
+    </td>
+  );
+};
 
 const CheatSheetMode = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showOnlyTraps, setShowOnlyTraps] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [isReciteMode, setIsReciteMode] = useState(false);
 
   const categories = ['全部', '節日習俗', '製作工法', '食材知識', '百年老店歷史', '其他知識'];
 
@@ -65,6 +95,17 @@ const CheatSheetMode = () => {
               className="search-input"
             />
           </div>
+          <label style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+            <strong>背誦測驗模式</strong>
+            <div className="switch">
+              <input 
+                type="checkbox" 
+                checked={isReciteMode}
+                onChange={(e) => setIsReciteMode(e.target.checked)}
+              />
+              <span className="slider"></span>
+            </div>
+          </label>
         </div>
       </div>
 
@@ -110,8 +151,12 @@ const CheatSheetMode = () => {
                     {q.trap && <span className="trap-warning">[⚠陷阱敘述] </span>}
                     {q.question}
                   </td>
-                  <td className="q-answer"><strong>{q.formattedAnswer}</strong></td>
-                  <td className="q-explanation">{q.explanation}</td>
+                  <MaskableTd className="q-answer" isReciteMode={isReciteMode}>
+                    <strong>{q.formattedAnswer}</strong>
+                  </MaskableTd>
+                  <MaskableTd className="q-explanation" isReciteMode={isReciteMode}>
+                    {q.explanation}
+                  </MaskableTd>
                 </tr>
               ))
             ) : (

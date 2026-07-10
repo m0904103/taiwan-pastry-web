@@ -1,0 +1,80 @@
+/* CheatSheetMode.css */
+/* 毛玻璃遮罩 (Glassmorphism) */
+.glass-mask {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  border-radius: inherit;
+}
+
+/* 點擊揭曉後的隱藏狀態 */
+.glass-mask.revealed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.glass-mask-text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 700;
+  background: rgba(255,255,255,0.85);
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  letter-spacing: 1px;
+}
+
+.maskable-td {
+  position: relative;
+}
+
+/* iOS 風格的 Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  margin-left: 10px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: .3s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 30px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .3s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+input:checked + .slider {
+  background-color: #34c759;
+  border-color: #34c759;
+}
+input:checked + .slider:before {
+  transform: translateX(22px);
+}

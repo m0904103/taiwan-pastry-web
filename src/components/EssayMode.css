@@ -62,3 +62,80 @@
   color: white;
   border-color: var(--primary-color);
 }
+
+
+/* 包含提示框與輸入框的相對定位容器 */
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 個人化經驗引導 - 便利貼樣式 */
+.experience-prompt {
+  position: absolute;
+  top: -24px;
+  right: 12px;
+  background-color: #fff9c4;
+  color: #795548;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 4px 4px 16px 4px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+  transform: rotate(3deg);
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.experience-prompt.focused {
+  transform: rotate(0deg) scale(1.05) translateY(-4px);
+  box-shadow: 4px 8px 16px rgba(0,0,0,0.15);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.8); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(255, 152, 0, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+}
+
+.experience-prompt.focused .prompt-indicator {
+  animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.prompt-indicator {
+  background-color: #ff9800;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 4px rgba(255,152,0,0.5);
+}
+
+/* 申論輸入框設計 */
+.essay-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 24px 16px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  resize: vertical; 
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: #fcfcfc;
+  color: #333;
+}
+
+.essay-textarea:focus {
+  border-color: #ff7f50;
+  box-shadow: 0 0 0 3px rgba(255, 127, 80, 0.15);
+  background: #ffffff;
+}
