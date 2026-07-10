@@ -120,7 +120,10 @@ const CheatSheetMode = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center p-4">找不到符合的考題</td>
+                <td colSpan="4" className="text-center p-4" style={{ color: 'var(--text-secondary)' }}>
+                  找不到符合的考題<br/>
+                  <span style={{ fontSize: '0.85em' }}>(請嘗試關閉「只看陷阱題」或清除搜尋關鍵字)</span>
+                </td>
               </tr>
             )}
           </tbody>
