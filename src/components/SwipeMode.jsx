@@ -3,6 +3,7 @@ import { RefreshCw, Zap, AlertTriangle, BookOpen, ChevronRight, Trophy } from 'l
 import GraphicScaffolding from './GraphicScaffolding';
 import HighlightedText from './HighlightedText';
 import questionsData from '../data/questions.json';
+import { getPastryImage } from '../utils/imageMapper';
 
 const SPRINT_SIZE = 10; // Cards per sprint
 
@@ -110,6 +111,11 @@ const SwipeMode = () => {
   const [seenIds, setSeenIds] = useState(new Set());
   const [wrongFlash, setWrongFlash] = useState(null); // {answer, explanation} shown after wrong swipe
   const [unlockToast, setUnlockToast] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('全部');
+
+  // Categories extraction
+  const CATEGORIES = ['全部', '節日習俗', '製作工法', '食材知識', '歷史典故由來'];
+  const CAT_EMOJI = { '全部': '🌟', '節日習俗': '🎊', '製作工法': '🛠️', '食材知識': '🍜', '歷史典故由來': '🏛️', '其他知識': '📚' };
 
   useEffect(() => {
     let savedBoxes = {};
@@ -126,12 +132,18 @@ const SwipeMode = () => {
       ...questionsData.true_false.map(q => ({ ...q, type: 'tf' })),
       ...questionsData.multiple_choice.map(q => ({ ...q, type: 'mc' })),
     ];
+    
+    // Apply category filter
+    const filtered = selectedCategory === '全部' 
+      ? combined 
+      : combined.filter(q => q.category === selectedCategory);
+
     let updatedBoxes = { ...savedBoxes };
-    combined.forEach(q => { if (updatedBoxes[q.id] === undefined) updatedBoxes[q.id] = 1; });
-    setAllQs(combined);
+    filtered.forEach(q => { if (updatedBoxes[q.id] === undefined) updatedBoxes[q.id] = 1; });
+    setAllQs(filtered);
     setBoxes(updatedBoxes);
-    buildSprint(combined, updatedBoxes, savedSeenIds);
-  }, []);
+    buildSprint(filtered, updatedBoxes, savedSeenIds);
+  }, [selectedCategory]);
 
   const saveBoxes = (newBoxes) => {
     setBoxes(newBoxes);
@@ -286,7 +298,6 @@ const SwipeMode = () => {
   const hardCards = sprintResults.filter(r => !r.knew).map(r => r.q);
 
   // Weakness by category
-  const CAT_EMOJI = { '節日習俗': '🎊', '製作工法': '🛠️', '食材知識': '🍜', '百年老店歷史': '🏛️', '其他知識': '📚' };
   const weaknessByCategory = {};
   hardCards.forEach(q => {
     const cat = q.category || '其他知識';
@@ -408,13 +419,36 @@ const SwipeMode = () => {
 
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '1.2rem', flexShrink: 0 }}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '0.3rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '0.5rem' }}>
           <h1 style={{ color: 'var(--accent-gold)', fontSize: '1.4rem', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
             <Zap size={22} /> 極限滑動刷題
           </h1>
           <span style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid var(--accent-gold)', borderRadius: '20px', padding: '2px 12px', fontSize: '0.8rem', color: 'var(--accent-gold)', fontWeight: '700' }}>
             ⚡ {todayCount} 題
           </span>
+        </div>
+        
+        {/* Category Filter */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', maxWidth: '460px', margin: '0 auto 0.5rem auto' }}>
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              style={{
+                background: selectedCategory === cat ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
+                color: selectedCategory === cat ? '#000' : 'var(--text-secondary)',
+                border: `1px solid ${selectedCategory === cat ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)'}`,
+                borderRadius: '16px',
+                padding: '4px 12px',
+                fontSize: '0.75rem',
+                fontWeight: selectedCategory === cat ? '700' : '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              {CAT_EMOJI[cat]} {cat}
+            </button>
+          ))}
         </div>
         <div className="desktop-hint" style={{ display: 'none', color: 'var(--text-secondary)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
           ⌨️ <strong>← / →</strong> 方向鍵判定・<strong>Space</strong> 看答案
@@ -452,14 +486,16 @@ const SwipeMode = () => {
       <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', maxWidth: '460px', margin: '0 auto', width: '100%', position: 'relative' }}>
         {currentCard ? (
           <div
-            className={`swipe-card ${flyOut ? 'fly-' + flyOut : ''} ${currentCard.category && currentCard.category.includes('神明') ? 'card-bg-history' : currentCard.category && currentCard.category.includes('生命') ? 'card-bg-history' : currentCard.category ? 'card-bg-cooking' : ''}`}
+            className={`swipe-card ${flyOut ? 'fly-' + flyOut : ''}`}
             style={{
               transform: `translate3d(${currentX}px, 0, 0) rotate(${currentX * 0.04}deg)`,
               transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275)',
               width: '100%',
               minHeight: '320px',
               maxHeight: 'calc(100dvh - 240px)',
-              background: 'var(--glass-bg)',
+              background: currentCard && getPastryImage(currentCard.question + (currentCard.explanation || '')) 
+                ? `linear-gradient(to bottom, rgba(18,18,18,0.7) 0%, rgba(18,18,18,0.95) 100%), url(${getPastryImage(currentCard.question + (currentCard.explanation || ''))}) center/cover no-repeat`
+                : 'var(--glass-bg)',
               border: '1px solid var(--glass-border)',
               borderRadius: '18px',
               padding: '1.5rem',
