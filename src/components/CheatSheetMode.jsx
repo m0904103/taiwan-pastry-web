@@ -94,7 +94,7 @@ const CheatSheetMode = () => {
               <th width="10%">題型</th>
               <th width="40%">考卷上的完整題目敘述</th>
               <th width="20%">正確答案</th>
-              <th width="30%">課本正確觀念 (詳解)</th>
+              <th width="30%">正確觀念 (詳解)</th>
             </tr>
           </thead>
           <tbody>
