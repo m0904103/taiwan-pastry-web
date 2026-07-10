@@ -9,7 +9,7 @@ const CheatSheetMode = () => {
   const [showOnlyTraps, setShowOnlyTraps] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
 
-  const categories = ['全部', '節日習俗', '製作工法', '食材知識', '百年老店歷史', '其他知識'];
+  const categories = ['全部', '節日習俗', '製作工法', '食材知識', '歷史典故由來', '其他知識'];
 
   // Combine TF and MC for the cheat sheet
   const allQuestions = [
@@ -29,7 +29,7 @@ const CheatSheetMode = () => {
   const filteredQuestions = allQuestions.filter(q => {
     if (showOnlyTraps && !q.trap) return false;
     if (selectedCategory !== '全部' && q.category !== selectedCategory) {
-      if (selectedCategory === '其他知識' && !['節日習俗', '製作工法', '食材知識', '百年老店歷史'].includes(q.category)) {
+      if (selectedCategory === '其他知識' && !['節日習俗', '製作工法', '食材知識', '歷史典故由來'].includes(q.category)) {
         // pass
       } else {
         return false;
