@@ -520,7 +520,7 @@ const SwipeMode = () => {
               </div>
             )}
             <GraphicScaffolding text={currentCard.question} />
-            <p style={{ fontSize: '1.25rem', lineHeight: 1.6, fontWeight: '600', marginBottom: '1rem', flex: 1, zIndex: 1 }}>
+            <p style={{ fontSize: '1.25rem', lineHeight: 1.6, fontWeight: '600', marginBottom: '1rem', flex: 1, zIndex: 1, textShadow: '0 2px 4px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.7)' }}>
               <HighlightText text={currentCard.question} keywords={pastryKeywords} />
             </p>
 
@@ -545,7 +545,7 @@ const SwipeMode = () => {
                     <p style={{ color: 'var(--accent-gold)', fontWeight: '700', fontSize: '0.95rem' }}>{currentCard.mnemonic}</p>
                   </div>
                 )}
-                {currentCard.explanation && <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{currentCard.explanation}</p>}
+                {currentCard.explanation && <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{currentCard.explanation}</p>}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontSize: '0.8rem', fontWeight: '700' }}>
                   <span style={{ color: 'var(--accent-red)' }}>← 還不熟</span>
                   <span style={{ color: 'var(--accent-green)' }}>記住了 →</span>
