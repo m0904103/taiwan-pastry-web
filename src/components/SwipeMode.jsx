@@ -482,7 +482,6 @@ const SwipeMode = () => {
             </button>
           ))}
         </div>
-        </div>
         {viewMode === 'card' && (
           <div className="desktop-hint" style={{ display: 'none', color: 'var(--text-secondary)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
             ⌨️ <strong>← / →</strong> 方向鍵判定・<strong>Space</strong> 看答案
