@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RefreshCw, Zap, AlertTriangle, BookOpen, ChevronRight, Trophy } from 'lucide-react';
+import { RefreshCw, Zap, AlertTriangle, BookOpen, ChevronRight, Trophy, List, Layout } from 'lucide-react';
 import GraphicScaffolding from './GraphicScaffolding';
 import HighlightText from './HighlightText';
 import { pastryKeywords } from '../data/keywords';
@@ -113,6 +113,7 @@ const SwipeMode = () => {
   const [wrongFlash, setWrongFlash] = useState(null); // {answer, explanation} shown after wrong swipe
   const [unlockToast, setUnlockToast] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [viewMode, setViewMode] = useState('card'); // 'card' or 'list'
 
   // Categories extraction
   const CATEGORIES = ['全部', '節日習俗', '製作工法', '食材知識', '歷史典故由來'];
@@ -429,6 +430,36 @@ const SwipeMode = () => {
           </span>
         </div>
         
+        {/* View Mode Toggle */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: '24px', padding: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <button
+              onClick={() => setViewMode('card')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 16px',
+                background: viewMode === 'card' ? 'var(--accent-gold)' : 'transparent',
+                color: viewMode === 'card' ? '#000' : 'var(--text-secondary)',
+                borderRadius: '20px', fontWeight: viewMode === 'card' ? '700' : '500',
+                border: 'none', cursor: 'pointer', transition: 'all 0.2s', fontSize: '0.85rem'
+              }}
+            >
+              <Layout size={16} /> 記憶卡模式
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 16px',
+                background: viewMode === 'list' ? 'var(--accent-gold)' : 'transparent',
+                color: viewMode === 'list' ? '#000' : 'var(--text-secondary)',
+                borderRadius: '20px', fontWeight: viewMode === 'list' ? '700' : '500',
+                border: 'none', cursor: 'pointer', transition: 'all 0.2s', fontSize: '0.85rem'
+              }}
+            >
+              <List size={16} /> 傳統列表模式
+            </button>
+          </div>
+        </div>
+        
         {/* Category Filter */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', maxWidth: '460px', margin: '0 auto 0.5rem auto' }}>
           {CATEGORIES.map(cat => (
@@ -451,11 +482,52 @@ const SwipeMode = () => {
             </button>
           ))}
         </div>
-        <div className="desktop-hint" style={{ display: 'none', color: 'var(--text-secondary)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
-          ⌨️ <strong>← / →</strong> 方向鍵判定・<strong>Space</strong> 看答案
         </div>
+        {viewMode === 'card' && (
+          <div className="desktop-hint" style={{ display: 'none', color: 'var(--text-secondary)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
+            ⌨️ <strong>← / →</strong> 方向鍵判定・<strong>Space</strong> 看答案
+          </div>
+        )}
       </div>
 
+      {viewMode === 'list' ? (
+        <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto' }}>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '0.5rem' }}>
+            共 {allQs.length} 題 ({selectedCategory})
+          </div>
+          {allQs.map((q, idx) => (
+            <div key={idx} style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '14px', padding: '1.2rem', boxShadow: 'var(--glass-shadow)', backdropFilter: 'blur(16px)' }}>
+              {q.category && (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '20px', padding: '2px 10px', fontSize: '0.7rem', color: 'var(--accent-gold)', marginBottom: '0.75rem' }}>
+                  {CAT_EMOJI[q.category] || '📌'} {q.category}
+                </div>
+              )}
+              {q.needs_review && (
+                <div style={{ background: 'rgba(230,180,0,0.15)', border: '1px solid rgba(230,180,0,0.4)', borderRadius: '6px', padding: '4px 8px', fontSize: '0.75rem', color: '#f0c040', marginBottom: '0.5rem' }}>
+                  ⚠️ 此題疑似有 OCR 掃描誤差，可能題意不明穌
+                </div>
+              )}
+              <h3 style={{ fontSize: '1.1rem', lineHeight: '1.5', fontWeight: '600', marginBottom: '0.8rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                {q.question}
+              </h3>
+              <div style={{ background: 'rgba(0,0,0,0.35)', borderRadius: '8px', padding: '0.8rem' }}>
+                <p style={{ color: 'var(--accent-gold)', fontWeight: '700', marginBottom: q.explanation || q.mnemonic ? '0.5rem' : 0, fontSize: '0.9rem' }}>
+                  ✅ 答案：{q.type === 'tf' ? (q.answer ? 'O (正確)' : 'X (錯誤)') : q.options?.[q.answer]}
+                </p>
+                {q.mnemonic && (
+                  <div style={{ background: 'rgba(212,175,55,0.15)', borderLeft: '3px solid var(--accent-gold)', padding: '0.5rem', margin: '0.5rem 0', borderRadius: '0 4px 4px 0' }}>
+                    <p style={{ color: 'var(--accent-gold)', fontWeight: '700', fontSize: '0.85rem' }}>{q.mnemonic}</p>
+                  </div>
+                )}
+                {q.explanation && (
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{q.explanation}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
       {/* Sprint Progress Bar */}
       <div style={{ maxWidth: '460px', margin: '0 auto', width: '100%', marginBottom: '1rem', flexShrink: 0 }}>
         {/* Coverage bar */}
@@ -644,6 +716,8 @@ const SwipeMode = () => {
           <span>🎉 解鎖圖鑑：</span>
           <span style={{ color: '#fff' }}>{unlockToast}</span>
         </div>
+      )}
+      </>
       )}
     </div>
   );
